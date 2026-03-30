@@ -1,0 +1,9 @@
+FROM python:3.10-slim
+WORKDIR /app
+RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements_streamlit.txt .
+RUN pip install --no-cache-dir -r requirements_streamlit.txt
+COPY cv_core.py app_streamlit.py ./
+EXPOSE 8501
+CMD ["streamlit","run","app_streamlit.py","--server.port=8501","--server.address=0.0.0.0","--server.headless=true"]
